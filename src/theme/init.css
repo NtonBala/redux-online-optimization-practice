@@ -1,0 +1,9 @@
+/* Core */
+@import-normalize;
+
+/* Instruments */
+@import './palette.css';
+@import './globals.css';
+
+/* Components */
+@import './components/example.css';

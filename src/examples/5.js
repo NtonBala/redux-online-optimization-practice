@@ -2,35 +2,62 @@
 import { createSelector } from 'reselect';
 
 // Instruments
-import appState from '../init/appState';
+import appState from '../init/appState.json';
 import { log } from '../helpers';
 
-const getPosts = (state) => state.posts;
+// Первый уровень защиты
+//             state === prevState
+//                    ↓
+const getCounter = (state) => state.counter;
+// Второй уровень защиты               ↑
+//                       prevState.counter === state.counter
 
-const selectJanePosts = createSelector(
-    getPosts,
-    (posts) => {
-        log('→ the result function was recomputed', 'aefd3e');
+const selectCount = createSelector(
+    getCounter,
+    (count) => {
+        log(`→ the result function was recomputed: ${count}`, 'aefd3e');
 
-        return posts.filter((post) => {
-            return post.author.name === 'Jane';
-        });
+        return count ** 10;
     },
 );
 
 // Вычисление
 console.time('✅ selector computes');
-const janePosts1 = selectJanePosts(appState);
+const computedCounter1 = selectCount(appState);
 console.timeEnd('✅ selector computes');
 
 // Мемоизация
 console.time('🎉 selector returns memoized value');
-const janePosts2 = selectJanePosts(appState);
+const computedCounter2 = selectCount(appState);
+console.timeEnd('🎉 selector returns memoized value');
+
+log('• −−−−−−−−− •', '1aa395');
+log(`→ recomputations: ${selectCount.recomputations()}`, 'f9d8a7');
+log('• −−−−−−−−− •', '1aa395');
+
+console.log('• computedCounter1 •', computedCounter1);
+console.log('• computedCounter2 •', computedCounter2);
+
+log('• −−−−−−−−− •', '1aa395');
+
+// Создаём новый объект с состоянием.
+const newState = { ...appState, counter: 4 };
+
+// Вычисление
+console.time('✅ selector computes');
+const computedCounter3 = selectCount(newState);
+console.timeEnd('✅ selector computes');
+
+// Мемоизация
+console.time('🎉 selector returns memoized value');
+const computedCounter4 = selectCount(newState);
 console.timeEnd('🎉 selector returns memoized value');
 
 log('• −−−−−−−−− •', '1aa395');
 
-console.log('→ janePosts1', janePosts1);
-console.log('→ janePosts2', janePosts2);
+console.log('→ computed counter value', computedCounter3);
+console.log('→ computed counter value', computedCounter4);
 
-log(`• recomputations • ${selectJanePosts.recomputations()}`, 'f9d8a7');
+log('• −−−−−−−−− •', '1aa395');
+log(`• recomputations • ${selectCount.recomputations()}`, 'f9d8a7');
+log('• −−−−−−−−− •', '1aa395');

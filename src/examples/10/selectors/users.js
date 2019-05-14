@@ -6,19 +6,20 @@ import { log } from '../../../helpers';
 
 // Хелпер, выводит производные данные
 const getPrefix = (users) => {
-    return users.map(({ name, gender, id }) => {
+    return users.map(({ name, gender, id, likes }) => {
         switch (gender) {
             case 'female':
-                return { id, fullname: `Miss ${name}` };
+                return { id, fullname: `Miss ${name}`, likes };
 
             case 'male':
-                return { id, fullname: `Mister ${name}` };
+                return { id, fullname: `Mister ${name}`, likes };
 
             default:
                 return {
                     id,
                     gender,
                     name,
+                    likes,
                 };
         }
     });

@@ -3,52 +3,27 @@
         {
             "id": "123",
             "comment": "Hi!",
-            "author": {
-                "id": "321",
-                "name": "Jane",
-                "gender": "female",
-                "likes": "dogs"
-            }
+            "author": { "id": "321" }
         },
         {
             "id": "456",
             "comment": "Goodbye!",
-            "author": {
-                "id": "323",
-                "name": "Mery",
-                "gender": "female",
-                "likes": "cats"
-            }
+            "author": { "id": "323" }
         },
         {
             "id": "789",
             "comment": "Good morning!",
-            "author": {
-                "id": "654",
-                "name": "Mike",
-                "gender": "male",
-                "likes": "cats"
-            }
+            "author": { "id": "654" }
         },
         {
             "id": "749",
             "comment": "Good afternoon!",
-            "author": {
-                "id": "321",
-                "name": "Jane",
-                "gender": "female",
-                "likes": "dogs"
-            }
+            "author": { "id": "321" }
         },
         {
             "id": "741",
             "comment": "Good night!",
-            "author": {
-                "id": "651",
-                "name": "Jack",
-                "gender": "male",
-                "likes": "dogs"
-            }
+            "author": { "id": "651" }
         }
     ],
     "users": [

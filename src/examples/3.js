@@ -12,7 +12,7 @@ const selectCount = createSelector(
     (count) => {
         log(`→ the result function was recomputed: ${count}`, 'aefd3e');
 
-        return count ** 4;
+        return count ** 10;
     },
 );
 
@@ -33,27 +33,4 @@ log('• −−−−−−−− •', '1aa395');
 console.log('→ computedCounter1', computedCounter1);
 console.log('→ computedCounter2', computedCounter2);
 
-log('• −−−− !! Mutation !! −−−− •', '1aa395');
-
-appState.counter = 555;
-
-/* новое значение не производится из-за мутации */
-console.time('🤕 selector returns memoized value');
-const computedCounter3 = selectCount(appState);
-console.timeEnd('🤕 selector returns memoized value');
-
-/* новое значение не производится из-за мутации */
-console.time('🤕 selector returns memoized value');
-const computedCounter4 = selectCount(appState);
-console.timeEnd('🤕 selector returns memoized value');
-
-log('• −−−− !! Mutation !! −−−− •', '1aa395');
-
-console.log('→ computedCounter3', computedCounter3);
-console.log('→ computedCounter4', computedCounter4);
-
-log('• −−−−−−−− •', '1aa395');
-log(`• recomputations • ${selectCount.recomputations()}`, 'f9d8a7');
-log('• −−−−−−−− •', '1aa395');
-
-console.log('→ result func:', selectCount.resultFunc(987));
+console.log('→ result func:', selectCount.resultFunc(99));

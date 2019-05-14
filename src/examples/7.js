@@ -6,15 +6,23 @@ import appState from '../init/appState';
 import { log } from '../helpers';
 
 const getPosts = (state) => state.posts;
+const getUsers = (state) => state.users;
 
 const selectJanePosts = createSelector(
     getPosts,
-    (posts) => {
+    getUsers,
+    (posts, users) => {
         log('→ the result function was recomputed', 'aefd3e');
 
-        return posts.filter((post) => {
-            return post.author.name === 'Jane';
+        const janePosts = posts.filter((post) => {
+            const postAuthor = users.find((user) => {
+                return user.id === post.author.id;
+            });
+
+            return postAuthor.name === 'Jane';
         });
+
+        return janePosts;
     },
 );
 
@@ -33,29 +41,28 @@ log('• −−−−−−−− •', '1aa395');
 console.log('→ janePosts1', janePosts1);
 console.log('→ janePosts2', janePosts2);
 
-log('• −−−−−−−− •', '1aa395');
+const newState = { ...appState };
 
-const newState = {
-    ...appState,
-    posts: [
-        ...appState.posts,
-        {
-            id:      '012',
-            comment: 'Good evening!',
-            author:  { id: '321', name: 'Jane', age: 28 },
-        },
-    ],
-};
+log('• −−−− !! Mutation !! −−−− •', 'FF0000');
 
-console.time('✅ selector computes');
+// Мутации — это не очень хорошо.
+newState.posts.push({
+    id:      '012',
+    comment: 'Good evening!',
+    author:  { id: '321' },
+});
+
+/* новое значение не производится из-за мутации */
+console.time('🤕 selector returns memoized value');
 const janePosts3 = selectJanePosts(newState);
-console.timeEnd('✅ selector computes');
+console.timeEnd('🤕 selector returns memoized value');
 
-console.time('🎉 selector returns memoized value');
+/* новое значение не производится из-за мутации */
+console.time('🤕 selector returns memoized value');
 const janePosts4 = selectJanePosts(newState);
-console.timeEnd('🎉 selector returns memoized value');
+console.timeEnd('🤕 selector returns memoized value');
 
-log('• −−−−−−−− •', '1aa395');
+log('• −−−− !! Mutation !! −−−− •', 'FF0000');
 
 console.log('→ janePosts3', janePosts3);
 console.log('→ janePosts4', janePosts4);

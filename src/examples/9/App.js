@@ -1,49 +1,45 @@
 // Core
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useState } from 'react';
 
 // Instruments
-import { log } from '../../helpers';
+import { selectItems } from './selectors';
 
 // Components
-import { Counter } from './Counter';
-import { Posts } from './Posts';
-import { Users } from './Users';
+import { List } from './List';
 
-/**
- *  connect:
- *
- * - Вызывает mapStateToProps(), если состояния приложения изменилось по ссылке после вызова dispatch(action);
- * - НЕ вызывает mapStateToProps() если состояние приложения НЕ изменилось по ссылке после вызова dispatch(action).
- *
- *  Если состояние приложения ИЗМЕНИЛОСЬ по ссылке, компонент connect() итерирует по каждому ЗНАЧЕНИЮ,
- *  объекта возвращаемого mapStateToProps(), и проводит shallow-comparison по ссылке с предыдущим значением.
- *
- * - Если хотя-бы одно ЗНАЧЕНИЕ изменилось по ссылке, компонент connect() перерендеривает оборачиваемым компонент (App);
- * - Если все ЗНАЧЕНИЯ НЕ ИЗМЕНИЛИСЬ, компонент connect() останавливается, препятствуя запуску механизма reconciliation React.
- */
+export const App = () => {
+    const [ counter1, setCounter1 ] = useState(100);
+    const [ counter2, setCounter2 ] = useState(100);
+    const [ counter3, setCounter3 ] = useState(0);
 
-const mapStateToProps = (state) => {
-    log('MSTP is called: App', 'afd947');
+    console.time('→ selector');
+    const items = selectItems({ counter1, counter2, counter3 });
+    console.timeEnd('→ selector');
 
-    return {
-        users: state.users,
-    };
+    return (
+        <section className = 'example'>
+            <h1>
+                Items array length: <code>{items.length}</code>
+            </h1>
+            <h3>
+                Counter 1: <code>{counter1}</code>
+            </h3>
+            <h3>
+                Counter 2: <code>{counter2}</code>
+            </h3>
+            <h3>
+                Counter 3: <code>{counter3}</code>
+            </h3>
+            <button onClick = { () => setCounter1(counter1 + 1) }>
+                Increment Counter 1
+            </button>
+            <button onClick = { () => setCounter2(counter2 + 1) }>
+                Increment Counter 2
+            </button>
+            <button onClick = { () => setCounter3(counter3 + 1) }>
+                Increment Counter 3
+            </button>
+            <List items = { items } />
+        </section>
+    );
 };
-
-export const App = connect(mapStateToProps)(
-    class extends Component {
-        render() {
-            log('render method is called: App', 'afd947');
-
-            return (
-                <section className = 'example'>
-                    <Counter />
-                    {/* <Users /> */}
-                    {/* <Posts byLikersOf = 'cats' /> */}
-                    {/* <Posts byLikersOf = 'dogs' /> */}
-                </section>
-            );
-        }
-    },
-);
